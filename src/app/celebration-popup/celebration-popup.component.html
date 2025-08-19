@@ -1,0 +1,30 @@
+<div class="popup-overlay" *ngIf="isVisible" (click)="closePopup()">
+  <div class="popup-container" (click)="$event.stopPropagation()">
+    <!-- Confetti Animation -->
+    <div class="confetti">
+      <div class="confetti-piece" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"></div>
+    </div>
+    
+    <!-- Winner Content -->
+    <div class="popup-content">
+      <div class="winner-icon" [class.draw-icon]="winner === 'draw'">
+        <span *ngIf="winner === 'draw'">🤝</span>
+        <span *ngIf="winner !== 'draw' && gameMode === 'ai' && winner === 'X'">🎉</span>
+        <span *ngIf="winner !== 'draw' && gameMode === 'ai' && winner === 'O'">🤖</span>
+        <span *ngIf="winner !== 'draw' && gameMode === 'friend'">🏆</span>
+      </div>
+      
+      <h1 class="winner-title">{{ getWinnerMessage() }}</h1>
+      <p class="winner-subtitle">{{ getWinnerSubtitle() }}</p>
+      
+      <div class="popup-buttons">
+        <button class="play-again-btn" (click)="startNewGame()">
+          🎮 Play Again
+        </button>
+        <button class="close-btn" (click)="closePopup()">
+          ✕ Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

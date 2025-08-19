@@ -1,0 +1,6 @@
+<button 
+  [class.x-move]="value === 'X'" 
+  [class.o-move]="value === 'O'"
+  [disabled]="value !== null">
+  {{ value }}
+</button>

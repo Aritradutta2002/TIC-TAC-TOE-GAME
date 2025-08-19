@@ -1,0 +1,118 @@
+<div class="game-container">
+  <div class="game-header">
+    <div class="title-container">
+      <h1 class="game-title">
+        <span class="title-word">Tic</span>
+        <span class="title-separator">⚡</span>
+        <span class="title-word">Tac</span>
+        <span class="title-separator">⚡</span>
+        <span class="title-word">Toe</span>
+      </h1>
+      <p class="game-subtitle">The Ultimate Strategy Game</p>
+    </div>
+    
+    <div class="controls-row">
+      <div class="game-mode-selector">
+        <label for="gameMode">Game Mode:</label>
+        <select id="gameMode" class="mode-select" [(ngModel)]="selectedGameMode" (change)="onGameModeChange()">
+          <option value="friend">vs Friend</option>
+          <option value="ai">vs AI</option>
+        </select>
+      </div>
+
+      <div class="difficulty-selector" *ngIf="selectedGameMode === 'ai'">
+        <label for="difficulty">Difficulty:</label>
+        <select id="difficulty" class="difficulty-select" [(ngModel)]="selectedDifficulty" (change)="onDifficultyChange()">
+          <option value="easy">Easy</option>
+          <option value="moderate">Moderate</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+
+      <div class="first-player-selector">
+        <label for="firstPlayer">First Turn:</label>
+        <select id="firstPlayer" class="mode-select" [(ngModel)]="selectedFirstPlayer" (change)="onFirstPlayerChange()">
+          <option *ngFor="let option of getFirstPlayerOptions()" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+
+      <button (click)="toggleTheme()" class="theme-toggle">
+        {{ (themeService.theme$ | async) === 'light' ? '🌙' : '☀️' }}
+        {{ (themeService.theme$ | async) === 'light' ? 'Dark' : 'Light' }} Mode
+      </button>
+      
+      <button (click)="newGame()" class="new-game-btn">New Game</button>
+    </div>
+
+    <!-- Player Names Section -->
+    <div class="player-names-section">
+      <div class="name-inputs" *ngIf="selectedGameMode === 'friend'">
+        <div class="name-input-group">
+          <label for="playerX">Player X:</label>
+          <input id="playerX" type="text" [(ngModel)]="playerXName" (blur)="updatePlayerNames()" placeholder="Player 1" maxlength="15">
+        </div>
+        <div class="name-input-group">
+          <label for="playerO">Player O:</label>
+          <input id="playerO" type="text" [(ngModel)]="playerOName" (blur)="updatePlayerNames()" placeholder="Player 2" maxlength="15">
+        </div>
+      </div>
+
+      <div class="name-inputs" *ngIf="selectedGameMode === 'ai'">
+        <div class="name-input-group">
+          <label for="humanPlayer">Your Name:</label>
+          <input id="humanPlayer" type="text" [(ngModel)]="playerXName" (blur)="updatePlayerNames()" placeholder="Player 1" maxlength="15">
+        </div>
+        <div class="name-input-group">
+          <label for="aiPlayer">AI Name:</label>
+          <input id="aiPlayer" type="text" [(ngModel)]="aiName" (blur)="updateAIName()" placeholder="AI Bot" maxlength="15">
+        </div>
+      </div>
+    </div>
+
+    <!-- Scoreboard Section -->
+    <div class="scoreboard-section">
+      <h3 class="scoreboard-title">🏆 Scoreboard</h3>
+      <div class="score-display">
+        <div class="score-item">
+          <span class="player-name">{{ gameService.getPlayerXDisplayName() }}</span>
+          <span class="score-value">{{ gameService.playerXScore }}</span>
+        </div>
+        <div class="score-item draw-score">
+          <span class="player-name">Draws</span>
+          <span class="score-value">{{ gameService.drawScore }}</span>
+        </div>
+        <div class="score-item">
+          <span class="player-name">{{ gameService.getPlayerODisplayName() }}</span>
+          <span class="score-value">{{ gameService.playerOScore }}</span>
+        </div>
+      </div>
+      <button (click)="resetScores()" class="reset-scores-btn">🔄 Reset Scores</button>
+    </div>
+  </div>
+
+  <div class="game-status">
+    <h2 *ngIf="!gameService.winner" class="current-player">
+      {{ getCurrentPlayerMessage() }}
+    </h2>
+  </div>
+
+  <main class="game-board">
+    <app-square
+      *ngFor="let val of gameService.squares; let i = index"
+      [value]="val"
+      (click)="makeMove(i)">
+    </app-square>
+  </main>
+
+  <!-- Celebration Popup -->
+  <app-celebration-popup
+    [isVisible]="!!gameService.winner"
+    [winner]="gameService.winner"
+    [winnerName]="gameService.getWinnerName()"
+    [gameMode]="gameService.gameMode"
+    (onClose)="closePopup()"
+    (onNewGame)="onPopupNewGame()">
+  </app-celebration-popup>
+</div>

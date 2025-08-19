@@ -1,0 +1,54 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --body-bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --body-bg-dark: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+html, body { 
+  height: 100%; 
+  transition: all 0.3s ease;
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--body-bg-light);
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background 0.3s ease;
+  overflow-x: hidden;
+}
+
+[data-theme="dark"] body {
+  background: var(--body-bg-dark);
+}
+
+/* Custom scrollbar for dark theme */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #2c3e50;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #7f8c8d;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #95a5a6;
+}
+
+/* Remove conflicting styles - components handle their own styling */
