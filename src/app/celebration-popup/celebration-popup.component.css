@@ -1,3 +1,5 @@
+/* ng Prime CSS for Celebration Popup Component */
+/* src/app/celebration-popup/celebration-popup.component.css */
 :host {
   --popup-bg-light: rgba(255, 255, 255, 0.95);
   --popup-bg-dark: rgba(44, 62, 80, 0.95);
